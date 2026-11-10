@@ -1,15 +1,14 @@
 #!/usr/bin/python3
 """Export the TODO lists of all employees to todo_all_employees.json."""
 import json
-import urllib.request
+import requests
 
 BASE_URL = "https://jsonplaceholder.typicode.com"
 
 
 def get_json(path):
     """Fetch and decode JSON from the API at the given path."""
-    with urllib.request.urlopen(BASE_URL + path) as response:
-        return json.loads(response.read().decode("utf-8"))
+    return requests.get(BASE_URL + path).json()
 
 
 def export_all_todos():
@@ -25,7 +24,7 @@ def export_all_todos():
                                "completed": todo.get("completed")}
                               for todo in todos
                               if todo.get("userId") == user_id]
-    with open("todo_all_employees.json", "w", encoding="utf-8") as json_file:
+    with open("todo_all_employees.json", "w") as json_file:
         json.dump(data, json_file)
 
 
